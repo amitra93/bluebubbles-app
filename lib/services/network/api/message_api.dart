@@ -153,6 +153,10 @@ class MessageApi {
         queryParameters: _svc.buildQueryParams(),
         data: data,
         cancelToken: cancelToken,
+        options: Options(
+          sendTimeout: const Duration(minutes: 2),
+          receiveTimeout: const Duration(minutes: 2),
+        ),
       );
       return _svc.returnSuccessOrError(response);
     });

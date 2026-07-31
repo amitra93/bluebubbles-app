@@ -22,18 +22,43 @@ class SendMessageActions {
     final partIndex = map['partIndex'] as int?;
     final ddScan = map['ddScan'] as bool?;
 
-    final response = await HttpSvc.message.sendText(
-      chatGuid,
-      tempGuid,
-      message,
-      method: method,
-      effectId: effectId,
-      subject: subject,
-      selectedMessageGuid: selectedMessageGuid,
-      partIndex: partIndex,
-      ddScan: ddScan,
-    );
-    return response.data as Map<String, dynamic>;
+    int retries = 0;
+    Object? lastError;
+    while (retries < 3) {
+      try {
+        final currentMethod = (retries > 0 && method == 'apple-script') ? 'private-api' : method;
+        final response = await HttpSvc.message.sendText(
+          chatGuid,
+          tempGuid,
+          message,
+          method: currentMethod,
+          effectId: effectId,
+          subject: subject,
+          selectedMessageGuid: selectedMessageGuid,
+          partIndex: partIndex,
+          ddScan: ddScan,
+        );
+        return response.data as Map<String, dynamic>;
+      } catch (e) {
+        final errString = e.toString().toLowerCase();
+        if (errString.contains("already queued")) {
+          return {
+            "status": 200,
+            "data": {
+              "guid": tempGuid,
+              "text": message,
+              "chatGuid": chatGuid,
+              "dateCreated": DateTime.now().millisecondsSinceEpoch,
+            }
+          };
+        }
+        lastError = e;
+        retries++;
+        if (retries >= 3) break;
+        await Future.delayed(Duration(milliseconds: 1000 * retries));
+      }
+    }
+    throw lastError!;
   }
 
   /// Sends a tapback via HTTP.

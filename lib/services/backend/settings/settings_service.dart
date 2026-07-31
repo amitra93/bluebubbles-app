@@ -31,7 +31,7 @@ SettingsService get SettingsSvc => GetIt.I<SettingsService>();
 
 class SettingsService {
   late Settings settings;
-  late FCMData fcmData;
+  FCMData fcmData = FCMData();
   bool _canAuthenticate = false;
   bool _showingPapiPopup = false;
   Completer<void> initCompleted = Completer<void>();
@@ -112,7 +112,11 @@ class SettingsService {
   }
 
   void loadFcmDataFromDatabase() {
-    fcmData = FCMData.getFCM();
+    try {
+      fcmData = FCMData.getFCM();
+    } catch (_) {
+      fcmData = FCMData();
+    }
   }
 
   Future<void> updateDisplayMode() async {
@@ -143,6 +147,10 @@ class SettingsService {
       if (response.data['data']['private_api'] is bool) {
         settings.serverPrivateAPI.value = response.data['data']['private_api'];
         toSave.add('serverPrivateAPI');
+        if (response.data['data']['private_api'] == true) {
+          settings.enablePrivateAPI.value = true;
+          toSave.add('enablePrivateAPI');
+        }
       }
 
       final version = int.tryParse(response.data['data']['os_version'].split(".")[0]);

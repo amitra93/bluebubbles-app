@@ -722,15 +722,17 @@ class OutgoingMessageHandler {
   ///   originator, or expressive effect).
   String _resolveMethod(Message m, {bool forAttachment = false}) {
     final papiEnabled = SettingsSvc.settings.enablePrivateAPI.value;
+    final serverPapi = SettingsSvc.settings.serverPrivateAPI.value;
     final papiSend =
         forAttachment ? SettingsSvc.settings.privateAPIAttachmentSend.value : SettingsSvc.settings.privateAPISend.value;
     if ((papiEnabled && papiSend) ||
+        serverPapi == true ||
         (m.subject?.isNotEmpty ?? false) ||
         m.threadOriginatorGuid != null ||
         m.expressiveSendStyleId != null) {
       return 'private-api';
     }
-    return 'apple-script';
+    return 'private-api';
   }
 
   /// Sends a text message (or a reaction/tapback) to [c].
