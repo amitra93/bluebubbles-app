@@ -1,8 +1,6 @@
 # BlueBubbles
 
-BlueBubbles is an open-source, cross-platform ecosystem of apps that brings iMessage to Android, Windows, Linux, and the web. Send messages, media, reactions, and more — all from your non-Apple devices.
-
-> **Note:** BlueBubbles requires a Mac running the BlueBubbles Server and an active Apple ID. A macOS virtual machine on Windows or Linux works as well.
+This is a fork of the standard Bluebubbles app to work on Macs. The normal repo ships a build for Windows and Linux but as of July 2026, the Mac build did not compile.
 
 ---
 
