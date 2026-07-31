@@ -1,0 +1,102 @@
+PODS:
+  - app_install_date (0.0.1):
+    - FlutterMacOS
+  - bitsdojo_window_macos (0.0.1):
+    - FlutterMacOS
+  - cupertino_http (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - desktop_webview_auth (0.0.1):
+    - FlutterMacOS
+  - flutter_image_compress_macos (1.0.0):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+  - maps_launcher (0.0.1):
+    - FlutterMacOS
+  - media_kit_libs_macos_video (1.0.4):
+    - FlutterMacOS
+  - media_kit_video (0.0.1):
+    - FlutterMacOS
+  - ObjectBox (5.3.0-beta.4)
+  - objectbox_flutter_libs (0.0.1):
+    - FlutterMacOS
+    - ObjectBox (= 5.3.0-beta.4)
+  - printing (1.0.0):
+    - FlutterMacOS
+  - screen_retriever_macos (0.0.1):
+    - FlutterMacOS
+  - store_checker (0.0.1):
+    - FlutterMacOS
+  - tray_manager (0.0.1):
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - app_install_date (from `Flutter/ephemeral/.symlinks/plugins/app_install_date/macos`)
+  - bitsdojo_window_macos (from `Flutter/ephemeral/.symlinks/plugins/bitsdojo_window_macos/macos`)
+  - cupertino_http (from `Flutter/ephemeral/.symlinks/plugins/cupertino_http/darwin`)
+  - desktop_webview_auth (from `Flutter/ephemeral/.symlinks/plugins/desktop_webview_auth/macos`)
+  - flutter_image_compress_macos (from `Flutter/ephemeral/.symlinks/plugins/flutter_image_compress_macos/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - maps_launcher (from `Flutter/ephemeral/.symlinks/plugins/maps_launcher/macos`)
+  - media_kit_libs_macos_video (from `Flutter/ephemeral/.symlinks/plugins/media_kit_libs_macos_video/macos`)
+  - media_kit_video (from `Flutter/ephemeral/.symlinks/plugins/media_kit_video/macos`)
+  - objectbox_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/objectbox_flutter_libs/macos`)
+  - printing (from `Flutter/ephemeral/.symlinks/plugins/printing/macos`)
+  - screen_retriever_macos (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever_macos/macos`)
+  - store_checker (from `Flutter/ephemeral/.symlinks/plugins/store_checker/macos`)
+  - tray_manager (from `Flutter/ephemeral/.symlinks/plugins/tray_manager/macos`)
+
+SPEC REPOS:
+  trunk:
+    - ObjectBox
+
+EXTERNAL SOURCES:
+  app_install_date:
+    :path: Flutter/ephemeral/.symlinks/plugins/app_install_date/macos
+  bitsdojo_window_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/bitsdojo_window_macos/macos
+  cupertino_http:
+    :path: Flutter/ephemeral/.symlinks/plugins/cupertino_http/darwin
+  desktop_webview_auth:
+    :path: Flutter/ephemeral/.symlinks/plugins/desktop_webview_auth/macos
+  flutter_image_compress_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_image_compress_macos/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  maps_launcher:
+    :path: Flutter/ephemeral/.symlinks/plugins/maps_launcher/macos
+  media_kit_libs_macos_video:
+    :path: Flutter/ephemeral/.symlinks/plugins/media_kit_libs_macos_video/macos
+  media_kit_video:
+    :path: Flutter/ephemeral/.symlinks/plugins/media_kit_video/macos
+  objectbox_flutter_libs:
+    :path: Flutter/ephemeral/.symlinks/plugins/objectbox_flutter_libs/macos
+  printing:
+    :path: Flutter/ephemeral/.symlinks/plugins/printing/macos
+  screen_retriever_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever_macos/macos
+  store_checker:
+    :path: Flutter/ephemeral/.symlinks/plugins/store_checker/macos
+  tray_manager:
+    :path: Flutter/ephemeral/.symlinks/plugins/tray_manager/macos
+
+SPEC CHECKSUMS:
+  app_install_date: d7a6f8a3675fc1a99244122c0caeb98a9e4fbfef
+  bitsdojo_window_macos: 7959fb0ca65a3ccda30095c181ecb856fae48ea9
+  cupertino_http: 94ac07f5ff090b8effa6c5e2c47871d48ab7c86c
+  desktop_webview_auth: d7fba72ef3ee2292cf66d464eede3c1a4690da83
+  flutter_image_compress_macos: e68daf54bb4bf2144c580fd4d151c949cbf492f0
+  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
+  maps_launcher: 2faa0fa1212dd0c5eaecb3a4d80edc21052c7227
+  media_kit_libs_macos_video: 85a23e549b5f480e72cae3e5634b5514bc692f65
+  media_kit_video: fa6564e3799a0a28bff39442334817088b7ca758
+  ObjectBox: eccb95ea2054c39d81dfa2d4ccc5f1e31187228a
+  objectbox_flutter_libs: 3adf97321750a5e89c199bda09d3c0ce659022d8
+  printing: c4cf83c78fd684f9bc318e6aadc18972aa48f617
+  screen_retriever_macos: 452e51764a9e1cdb74b3c541238795849f21557f
+  store_checker: 0b5120a0f0a0f36af7b4be01a049e6006151dc16
+  tray_manager: a104b5c81b578d83f3c3d0f40a997c8b10810166
+
+PODFILE CHECKSUM: 98d925794ef857e1bc32e5594b7b359f73197dee
+
+COCOAPODS: 1.16.2
