@@ -87,6 +87,7 @@ class NotificationsService {
         settings: InitializationSettings(
           android: const AndroidInitializationSettings('ic_stat_icon'),
           linux: const LinuxInitializationSettings(defaultActionName: 'Open'),
+          macOS: const DarwinInitializationSettings(),
           windows: WindowsInitializationSettings(
             appName: 'BlueBubbles',
             appUserModelId: windowsNotificationGuid,

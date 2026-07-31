@@ -2,6 +2,7 @@ import 'package:bluebubbles/app/wrappers/bb_annotated_region.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/window_effect.dart';
+import 'package:universal_io/io.dart';
 
 /// BlueBubbles standardized Scaffold wrapper
 ///

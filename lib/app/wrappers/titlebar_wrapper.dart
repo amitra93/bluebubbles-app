@@ -5,8 +5,7 @@ import 'package:bluebubbles/app/layouts/conversation_view/widgets/header/header_
 import 'package:bluebubbles/helpers/helpers.dart';
 import 'package:bluebubbles/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_utils/src/extensions/context_extensions.dart';
+import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 
 class TitleBarWrapper extends StatelessWidget {
@@ -16,7 +15,7 @@ class TitleBarWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kIsDesktop) {
+    if (!kIsDesktop || Platform.isMacOS) {
       return Stack(
         children: <Widget>[
           child,
@@ -27,7 +26,7 @@ class TitleBarWrapper extends StatelessWidget {
 
     return Obx(
       () => (SettingsSvc.settings.titleBarStyle.value == BBTitleBarStyle.custom && Platform.isLinux) ||
-              (kIsDesktop && !Platform.isLinux)
+              (kIsDesktop && !Platform.isLinux && !Platform.isMacOS)
           ? WindowBorder(
               color: Colors.transparent,
               width: 0,

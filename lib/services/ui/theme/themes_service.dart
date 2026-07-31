@@ -67,10 +67,14 @@ class ThemesService {
     // Re-save preset themes so any stale DB values (e.g. old surfaceContainerHighest)
     // are always overwritten with the current static definitions.
     if (!kIsWeb) {
-      for (final preset in defaultThemes) {
-        preset.save(updateIfNotAbsent: true);
+      try {
+        for (final preset in defaultThemes) {
+          preset.save(updateIfNotAbsent: true);
+        }
+        _refreshMaterialYouThemePresets();
+      } catch (e, s) {
+        debugPrint("ThemesService.init: Failed to save preset themes to database: $e");
       }
-      _refreshMaterialYouThemePresets();
     }
   }
 

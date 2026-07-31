@@ -163,7 +163,7 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
               : TitleBarStyle.hidden);
         }
         windowManager.addListener(DesktopWindowListener.instance);
-        doWhenWindowReady(() async {
+        final setupDesktopWindow = () async {
           await windowManager.setMinimumSize(const Size(300, 300));
           Display primary = await ScreenRetriever.instance.getPrimaryDisplay();
 
@@ -174,11 +174,8 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
           height = height.clamp(300, max(300, primary.size.height));
 
           if (isWaylandSession) {
-            // Wayland forbids a client from positioning itself, so only restore
-            // the size and leave placement to the compositor.
             await windowManager.setSize(Size(width, height));
           } else {
-            // Restore position otherwise
             final centered = await calcWindowPosition(Size(width, height), Alignment.center);
             double posX = PrefsSvc.desktop.getWindowX() ?? centered.dx;
             double posY = PrefsSvc.desktop.getWindowY() ?? centered.dy;
@@ -192,6 +189,7 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
           await windowManager.setTitle('BlueBubbles');
           if (arguments.firstOrNull != "minimized") {
             await windowManager.show();
+            await windowManager.focus();
           } else {
             await windowManager.hide();
           }
@@ -199,14 +197,20 @@ Future<Null> initApp(bool bubble, List<String> arguments) async {
             await const MethodChannel('bluebubbles/splash').invokeMethod('closeSplash');
           } catch (_) {}
           detachSplashStatus?.call();
-          unawaited(ThemeSvc.initDynamicColorsDeferred()); // Linux: deferred past splash
+          unawaited(ThemeSvc.initDynamicColorsDeferred());
           bool shouldAuthenticate =
               !Platform.isLinux && SettingsSvc.canAuthenticate && SettingsSvc.settings.shouldSecure.value;
           if (!shouldAuthenticate) {
             ChatsSvc.init();
             SocketSvc.init();
           }
-        });
+        };
+
+        if (Platform.isWindows) {
+          doWhenWindowReady(setupDesktopWindow);
+        } else {
+          await setupDesktopWindow();
+        }
 
         await dotenv.load();
       }
@@ -382,7 +386,7 @@ class Main extends StatelessWidget {
           // SecureGate below) throws MissingPluginException on every lifecycle
           // event, which breaks window close/hide once the app is past setup.
           // Bypass the secure wrapper entirely on Linux.
-          child: Platform.isLinux
+          child: kIsDesktop
               ? TitleBarWrapper(child: child ?? Container())
               : SecureApplication(
                   child: Builder(

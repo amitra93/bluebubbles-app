@@ -70,8 +70,15 @@ class FCMData {
   }
 
   static FCMData getFCM() {
-    final result = Database.fcmData.getAll();
-    if (result.isEmpty) {
+    try {
+      final result = Database.fcmData.getAll();
+      if (result.isNotEmpty) {
+        return result.first;
+      }
+    } catch (e) {
+      debugPrint("FCMData.getFCM error: $e");
+    }
+    try {
       return FCMData(
         projectID: PrefsSvc.firebase.getProjectID(),
         storageBucket: PrefsSvc.firebase.getStorageBucket(),
@@ -80,8 +87,9 @@ class FCMData {
         clientID: PrefsSvc.firebase.getClientID(),
         applicationID: PrefsSvc.firebase.getApplicationID(),
       );
+    } catch (_) {
+      return FCMData();
     }
-    return result.first;
   }
 
   Map<String, dynamic> toMap() => {

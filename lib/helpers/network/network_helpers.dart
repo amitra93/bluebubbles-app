@@ -13,15 +13,11 @@ String? sanitizeServerAddress({String? address}) {
   if (sanitized.isEmpty) return null;
 
   Uri? uri = Uri.tryParse(sanitized);
-  if (uri?.scheme.isEmpty ?? false) {
-    if (sanitized.contains("ngrok.io") || sanitized.contains("trycloudflare.com") || sanitized.contains("zrok.io")) {
-      uri = Uri.tryParse("https://$sanitized");
-    } else {
-      uri = Uri.tryParse("http://$sanitized");
-    }
+  if (uri?.hasScheme != true || uri!.scheme.isEmpty) {
+    uri = Uri.tryParse("https://$sanitized");
   }
 
-  return uri.toString();
+  return uri?.toString();
 }
 
 Future<int> getOrCreateUniqueId() async {

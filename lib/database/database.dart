@@ -156,17 +156,19 @@ class Database {
       }
 
       Logger.info("Opening ObjectBox store from path: ${objectBoxDirectory.path}");
-      store = await openStore(directory: objectBoxDirectory.path);
-    } catch (e) {
-      if (e.toString().contains("another store is still open using the same path")) {
-        Logger.debug("Retrying to attach to an existing ObjectBox store");
-        store = Store.attach(getObjectBoxModel(), objectBoxDirectory.path);
-      } else if (Platform.isLinux) {
-        Logger.debug("Another instance is probably running. Sending foreground signal");
-        final instanceFile = File(join(FilesystemSvc.appDocDir.path, '.instance'));
-        instanceFile.openSync(mode: FileMode.write).closeSync();
-        exit(0);
+      try {
+        store = await openStore(directory: objectBoxDirectory.path);
+      } catch (e) {
+        Logger.warn("Failed to open ObjectBox store directly ($e), attempting Store.attach...");
+        try {
+          store = Store.attach(getObjectBoxModel(), objectBoxDirectory.path);
+        } catch (attachErr) {
+          Logger.warn("Store.attach failed ($attachErr), opening fresh Store instance...");
+          store = Store(getObjectBoxModel(), directory: objectBoxDirectory.path);
+        }
       }
+    } catch (e, s) {
+      Logger.error("Failed to initialize desktop ObjectBox store!", error: e, trace: s);
     }
   }
 
