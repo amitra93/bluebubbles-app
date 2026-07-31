@@ -187,7 +187,7 @@ class FullSyncManager extends SyncManager {
     return completer!.future;
   }
 
-  Stream<ChatSyncPage> streamChatPages(int? count, {int batchSize = 200}) async* {
+  Stream<ChatSyncPage> streamChatPages(int? count, {int batchSize = 100}) async* {
     // Set some default sync values
     int batches = 1;
     int countPerBatch = batchSize;
@@ -200,15 +200,23 @@ class FullSyncManager extends SyncManager {
     }
 
     for (int i = 0; i < batches; i++) {
-      // Fetch the chats and throw an error if we don't get back a good response.
-      // Throwing an error should cancel the sync
-      Response chatPage = await HttpSvc.chat.query(
-          offset: i * countPerBatch,
-          limit: countPerBatch,
-          sort: kIsWeb ? "lastmessage" : null,
-          withQuery: ["lastMessage"]);
+      Response? chatPage;
+      int retries = 0;
+      while (chatPage == null && retries < 5) {
+        try {
+          chatPage = await HttpSvc.chat.query(
+              offset: i * countPerBatch,
+              limit: countPerBatch,
+              sort: kIsWeb ? "lastmessage" : null,
+              withQuery: ["lastMessage"]);
+        } catch (e) {
+          retries++;
+          if (retries >= 5) rethrow;
+          await Future.delayed(Duration(milliseconds: 500 * retries));
+        }
+      }
 
-      dynamic data = chatPage.data;
+      dynamic data = chatPage!.data;
       if (chatPage.statusCode != 200) {
         throw ChatRequestException(
             '${data["error"]?["type"] ?? "API_ERROR"}: data["message"] ?? data["error"]["message"]}');
@@ -253,15 +261,23 @@ class FullSyncManager extends SyncManager {
     }
 
     for (int i = 0; i < batches; i++) {
-      // Fetch the messages and throw an error if we don't get back a good response.
-      // Throwing an error should _not_ cancel the sync
-      Response messagePage = await HttpSvc.chat.getMessages(chatGuid,
-          after: 0,
-          before: endTimestamp,
-          offset: i * countPerBatch,
-          limit: countPerBatch,
-          withQuery: "attachments,handle,message.attributedBody,message.messageSummaryInfo,message.payloadData");
-      dynamic data = messagePage.data;
+      Response? messagePage;
+      int retries = 0;
+      while (messagePage == null && retries < 3) {
+        try {
+          messagePage = await HttpSvc.chat.getMessages(chatGuid,
+              after: 0,
+              before: endTimestamp,
+              offset: i * countPerBatch,
+              limit: countPerBatch,
+              withQuery: "attachments,handle,message.attributedBody,message.messageSummaryInfo,message.payloadData");
+        } catch (e) {
+          retries++;
+          if (retries >= 3) rethrow;
+          await Future.delayed(Duration(milliseconds: 300 * retries));
+        }
+      }
+      dynamic data = messagePage!.data;
       if (messagePage.statusCode != 200) {
         throw MessageRequestException(
             '${data["error"]?["type"] ?? "API_ERROR"}: data["message"] ?? data["error"]["message"]}');
